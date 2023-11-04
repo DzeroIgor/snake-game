@@ -1,5 +1,5 @@
 
-let snake = new Snake(2, 3, "up");
+let snake = new Snake(2, 2, "up");
 let map = new Map();
 let apple = new Apple(3, 6);
 let mouse = new Mouse(4, 7);
