@@ -6,14 +6,13 @@ class Snake {
 
         // snake segments/ elements
         this.children = [];
-        this.children.push(new Head(x, y, "up"));
-        this.children.push(new Body(x, y+1, dir));
-        this.children.push(new Body(x, y+2, dir));
-        this.children.push(new Body(x, y+3, dir));
-        this.children.push(new Body(x, y+4, dir));
-        this.children.push(new Body(x, y+5, dir));
-        this.children.push(new Body(x, y+6, dir));
-        this.children.push(new Tail(x, y+7, dir));      
+        const segmentsCount = 9;
+        this.children.push(new Head(x, y, "up")); 
+
+        for (let i = 1; i < segmentsCount - 1; i++) {
+            this.children.push(new Body(x, y + i, dir));
+        }
+        this.children.push(new Tail(x, y + segmentsCount - 1, dir)); 
     }
 
     move() {
@@ -45,6 +44,7 @@ class Snake {
                     s.dir = "up";
                     s.y--;
                 }    
+
                 turnBody(s, i, neighbor)
                 
                 if (i === 0) {    
@@ -52,10 +52,8 @@ class Snake {
                 }
             }                        
         } )
-
         this.children.reverse()
-        border()
-        
+        border()        
     }
     
     // when rendering the SNAKE - also render the head
@@ -71,83 +69,136 @@ class Snake {
 }
 
 function turnBody(s, i, neighbor) {
+    // if (s.dir === "up" && neighbor.dir === "right") {
+        //     s.dir = "up-right";
+    // } else if (s.dir === "left" && neighbor.dir === "down") {
+    //     s.dir = "up-right";
+    // } else if (s.dir === "up" && neighbor.dir === "left") {
+    //     s.dir = "up-left";
+    // } else if (s.dir === "right" && neighbor.dir === "down") {
+    //     s.dir = "up-left";
+    // } else if (s.dir === "down" && neighbor.dir === "right") {
+    //     s.dir = "down-right";
+    // } else if (s.dir === "left" && neighbor.dir === "up") {
+    //     s.dir = "down-right";
+    // } else if (s.dir === "down" && neighbor.dir === "left") {
+    //     s.dir = "down-left";
+    // } else if (s.dir === "right" && neighbor.dir === "up") {
+    //     s.dir = "down-left";
+    // }
+    const turnFirstSeg = {
+        "up":    { "right": "up-right", "left": "up-left" },
+        "right": { "up": "down-left", "down": "up-left" },
+        "down":  { "right": "down-right", "left": "down-left" },
+        "left":  { "up": "down-right", "down": "up-right" }
+    };
     // change segment in the turn after header
-    if (s.dir === "up" && neighbor.dir === "right") {
-        s.dir = "up-right";
-    } else if (s.dir === "left" && neighbor.dir === "down") {
-        s.dir = "up-right";
-    } else if (s.dir === "up" && neighbor.dir === "left") {
-        s.dir = "up-left";
-    } else if (s.dir === "right" && neighbor.dir === "down") {
-        s.dir = "up-left";
-    } else if (s.dir === "down" && neighbor.dir === "right") {
-        s.dir = "down-right";
-    } else if (s.dir === "left" && neighbor.dir === "up") {
-        s.dir = "down-right";
-    } else if (s.dir === "down" && neighbor.dir === "left") {
-        s.dir = "down-left";
-    } else if (s.dir === "right" && neighbor.dir === "up") {
-        s.dir = "down-left";
+    if (turnFirstSeg[s.dir] && turnFirstSeg[s.dir][neighbor.dir]) {
+        s.dir = turnFirstSeg[s.dir][neighbor.dir];
     }
 
+    const turnSecondSeg = {
+        "up":    { "up-right": "up-right", "up-left": "up-left" },
+        "right": { "down-left": "down-left", "up-left": "up-left" },
+        "down":  { "down-right": "down-right", "down-left": "down-left" },
+        "left":  { "down-right": "down-right", "up-right": "up-right" }
+    };    
     // change the next segment in the turn 
     if (i != 0) {
-        if (s.dir === "up" && neighbor.dir === "up-right") {
-            s.dir = "up-right";
-        } else if (s.dir === "left" && neighbor.dir === "up-right") {
-            s.dir = "up-right";
-        } else if (s.dir === "up" && neighbor.dir === "up-left") {
-            s.dir = "up-left";
-        } else if (s.dir === "right" && neighbor.dir === "up-left") {
-            s.dir = "up-left";
-        } else if (s.dir === "down" && neighbor.dir === "down-right") {
-            s.dir = "down-right";
-        } else if (s.dir === "left" && neighbor.dir === "down-right") {
-            s.dir = "down-right";
-        } else if (s.dir === "down" && neighbor.dir === "down-left") {
-            s.dir = "down-left";
-        } else if (s.dir === "right" && neighbor.dir === "down-left") {
-            s.dir = "down-left";
+        if (turnSecondSeg[s.dir] && turnSecondSeg[s.dir][neighbor.dir]) {
+        s.dir = turnSecondSeg[s.dir][neighbor.dir];
         }
+    // if (s.dir === "up" && neighbor.dir === "up-right") {
+    //     s.dir = "up-right";
+    // } else if (s.dir === "left" && neighbor.dir === "up-right") {
+    //     s.dir = "up-right";
+    // } else if (s.dir === "up" && neighbor.dir === "up-left") {
+    //     s.dir = "up-left";
+    // } else if (s.dir === "right" && neighbor.dir === "up-left") {
+    //     s.dir = "up-left";
+    // } else if (s.dir === "down" && neighbor.dir === "down-right") {
+    //     s.dir = "down-right";
+    // } else if (s.dir === "left" && neighbor.dir === "down-right") {
+    //     s.dir = "down-right";
+    // } else if (s.dir === "down" && neighbor.dir === "down-left") {
+    //     s.dir = "down-left";
+    // } else if (s.dir === "right" && neighbor.dir === "down-left") {
+    //     s.dir = "down-left";
+    // }
     }
 }
 
 // function for turn tail
 function turnTail(s, neighbor) {
-        if (s.dir === "up" && neighbor.dir === "up-right") {
-            s.dir = "right";
-        } else if (s.dir === "left" && neighbor.dir === "up-right") {
-            s.dir = "down";
-        } else if (s.dir === "up" && neighbor.dir === "up-left") {
-            s.dir = "left";
-        } else if (s.dir === "right" && neighbor.dir === "up-left") {
-            s.dir = "down";
-        } else if (s.dir === "down" && neighbor.dir === "down-right") {
-            s.dir = "right";
-        } else if (s.dir === "left" && neighbor.dir === "down-right") {
-            s.dir = "up";
-        } else if (s.dir === "down" && neighbor.dir === "down-left") {
-            s.dir = "left";
-        } else if (s.dir === "right" && neighbor.dir === "down-left") {
-            s.dir = "up";
-        }
-    return s.dir;
+    const tailTurn = {
+        "up":    { "up-right": "right", "up-left": "left" },
+        "right": { "down-left": "up", "up-left": "down" },
+        "down":  { "down-right": "right", "down-left": "left" },
+        "left":  { "down-right": "up", "up-right": "down" }
+    };
+
+    if (tailTurn[s.dir] && tailTurn[s.dir][neighbor.dir]) {
+        s.dir = tailTurn[s.dir][neighbor.dir];
+    }
+    // if (s.dir === "up" && neighbor.dir === "up-right") {
+    //     s.dir = "right";
+    // } else if (s.dir === "left" && neighbor.dir === "up-right") {
+    //     s.dir = "down";
+    // } else if (s.dir === "up" && neighbor.dir === "up-left") {
+    //     s.dir = "left";
+    // } else if (s.dir === "right" && neighbor.dir === "up-left") {
+    //     s.dir = "down";
+    // } else if (s.dir === "down" && neighbor.dir === "down-right") {
+    //     s.dir = "right";
+    // } else if (s.dir === "left" && neighbor.dir === "down-right") {
+    //     s.dir = "up";
+    // } else if (s.dir === "down" && neighbor.dir === "down-left") {
+    //     s.dir = "left";
+    // } else if (s.dir === "right" && neighbor.dir === "down-left") {
+    //     s.dir = "up";
+    // }
 }
 
  function border() {
-    
-    if (snake.children[0].x > (map.width - 2)) {
-        snake.children[0].dir = "down";
-    }
-    if (snake.children[0].y > (map.height - 2)) {
-        snake.children[0].dir = "left";
-    }
-    if (snake.children[0].x < 1) {
-        snake.children[0].dir = "up";
-    }
-    if (snake.children[0].y < 1) {
-        snake.children[0].dir = "right";
-    }
+    if (snake.children[0].dir === "up" && snake.children[0].y === 0) {
+    snake.children[0].dir = snake.children[0].x <= 4 ? "right" : "left";
+} else if (snake.children[0].dir === "left" && snake.children[0].x === 0) {
+    snake.children[0].dir = snake.children[0].y <= 4 ? "down" : "up";
+} else if (snake.children[0].dir === "right" && snake.children[0].x === 9) {
+    snake.children[0].dir = snake.children[0].y <= 4 ? "down" : "up";
+} else if (snake.children[0].dir === "down" && snake.children[0].y === 9) {
+    snake.children[0].dir = snake.children[0].x <= 4 ? "right" : "left";
+}
+    // long version of function
+
+    // if (snake.children[0].y === 0 && snake.children[0].dir === "up") {
+    //     if (snake.children[0].x >= 0 && snake.children[0].x <= 4) {
+    //         snake.children[0].dir = "right";
+    //     } else if (snake.children[0].x >= 5 && snake.children[0].x <= 9) {
+    //         snake.children[0].dir = "left";
+    //     }
+    // }
+    // else if (snake.children[0].x === 0 && snake.children[0].dir === "left") {
+    //     if (snake.children[0].y >= 0 && snake.children[0].y <= 4) {
+    //         snake.children[0].dir = "down";
+    //     } else if (snake.children[0].y >= 5 && snake.children[0].y <= 9) {
+    //         snake.children[0].dir = "up";
+    //     }
+    // }
+    // else if (snake.children[0].x === 9 && snake.children[0].dir === "right") {
+    //     if (snake.children[0].y >= 0 && snake.children[0].y <= 4) {
+    //         snake.children[0].dir = "down";
+    //     } else if (snake.children[0].y >= 5 && snake.children[0].y <= 9) {
+    //         snake.children[0].dir = "up";
+    //     }
+    // }
+    // else if (snake.children[0].y === 9 && snake.children[0].dir === "down") {
+    //     if (snake.children[0].x >= 0 && snake.children[0].x <= 4) {
+    //         snake.children[0].dir = "right";
+    //     } else if (snake.children[0].x >= 5 && snake.children[0].x <= 9) {
+    //         snake.children[0].dir = "left";
+    //     }
+    // }
 
 }
 
