@@ -1,12 +1,14 @@
 // [Snake]> parent > [Head]
 
+
 class Snake {
     // when creating a new snake -> attach a head to it
     constructor(x,y, dir="up") {
 
         // snake segments/ elements
         this.children = [];
-        const segmentsCount = 9;
+        let segmentsCount = 3;
+
         this.children.push(new Head(x, y, "up")); 
 
         for (let i = 1; i < segmentsCount - 1; i++) {
@@ -199,9 +201,30 @@ function turnTail(s, neighbor) {
     //         snake.children[0].dir = "left";
     //     }
     // }
-
 }
 
+/*
+function turnHead(s, neighbor) {
+   
+    if (s.dir === "up" && neighbor.dir === "right") {
+            s.dir = "up-right";
+    } else if (s.dir === "left" && neighbor.dir === "down") {
+        s.dir = "up-right";
+    } else if (s.dir === "up" && neighbor.dir === "left") {
+        s.dir = "up-left";
+    } else if (s.dir === "right" && neighbor.dir === "down") {
+        s.dir = "up-left";
+    } else if (s.dir === "down" && neighbor.dir === "right") {
+        s.dir = "down-right";
+    } else if (s.dir === "left" && neighbor.dir === "up") {
+        s.dir = "down-right";
+    } else if (s.dir === "down" && neighbor.dir === "left") {
+        s.dir = "down-left";
+    } else if (s.dir === "right" && neighbor.dir === "up") {
+        s.dir = "down-left";
+    }
+}
+*/
 
 // snake -> unidirectional -> head 
 

@@ -6,7 +6,11 @@ let mouse = new Mouse(4, 7);
 let heart = new Heart(7, 4);
 let frog = new Frog(7, 2);
 // let egg = new Egg(9, 3);
-let coin = new Coin(3, 8);
+let coin = new Coin(2, 1);
+
+if (snake.x == coin.x && snake.y == coin.y) {
+alert()
+}
 
 map.children.push(apple);
 map.children.push(coin);
@@ -30,3 +34,5 @@ const userAction = (e) => {
         case "ArrowLeft": snake.children[0].dir = "left"; break;
     }
 }
+
+

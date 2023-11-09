@@ -4,7 +4,8 @@ class Map {
         this.width = width;
         this.height = height;
 
-        this.children = [] // all the objects on the map
+        this.children = []
+         // all the objects on the map
     }
 
     render(root) {
