@@ -3,12 +3,12 @@
 
 class Snake {
     
-    constructor(x,y, dir="up") {
+    constructor(x,y, dir="up", segmentsCount=3) {
 
         // snake segments/ elements
         this.children = [];     // [Head, Body, Tail]
-        // let segmentsCount = 3;
-        this.segmentsCount = 5;
+
+        this.segmentsCount = segmentsCount;
 
         // push head
         this.children.push(new Head(x, y, "up")); 
@@ -21,10 +21,11 @@ class Snake {
         // push tail
         this.children.push(new Tail(x, y + this.segmentsCount - 1, dir)); 
     }
-
+    
     move() {        
         this.children.reverse()
-
+        
+        
         this.children.forEach( (s,i)=> {
             
             if(i == this.children.length -1) {
@@ -50,13 +51,13 @@ class Snake {
                     s.dir = "up";
                     s.y--;
                 }    
-
+                
                 turnBody(s, i, neighbor)
                 
                 if (i === 0) {    
                     turnTail(s, neighbor)
                 }
-            }                        
+            }                       
         } )
         this.children.reverse()
         border()      
@@ -72,7 +73,10 @@ class Snake {
         
         return html
     }
-    
+
+    addSegments(count) {
+        this.segmentsToAdd += count;
+    }
 }
 
 function turnBody(s, i, neighbor) {
