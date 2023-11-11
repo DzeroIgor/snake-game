@@ -2,23 +2,27 @@
 
 
 class Snake {
-    // when creating a new snake -> attach a head to it
+    
     constructor(x,y, dir="up") {
 
         // snake segments/ elements
-        this.children = [];
-        let segmentsCount = 3;
+        this.children = [];     // [Head, Body, Tail]
+        // let segmentsCount = 3;
+        this.segmentsCount = 5;
 
+        // push head
         this.children.push(new Head(x, y, "up")); 
-
-        for (let i = 1; i < segmentsCount - 1; i++) {
+        
+        // push segments of body
+        for (let i = 1; i < this.segmentsCount - 1; i++) {
             this.children.push(new Body(x, y + i, dir));
         }
-        this.children.push(new Tail(x, y + segmentsCount - 1, dir)); 
+
+        // push tail
+        this.children.push(new Tail(x, y + this.segmentsCount - 1, dir)); 
     }
 
-    move() {
-        
+    move() {        
         this.children.reverse()
 
         this.children.forEach( (s,i)=> {
@@ -28,7 +32,7 @@ class Snake {
                 if(s.dir == "down")  {s.y++}
                 if(s.dir == "right") {s.x++}
                 if(s.dir == "left")  {s.x--}
-
+                
             } else {
                 // if+s where is the neighbor 
                 let neighbor = this.children[i + 1];
@@ -55,8 +59,9 @@ class Snake {
             }                        
         } )
         this.children.reverse()
-        border()        
+        border()      
     }
+    
     
     // when rendering the SNAKE - also render the head
     render() {
