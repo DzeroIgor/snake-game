@@ -21,16 +21,18 @@ map.render(container)
 setInterval(()=> {
     snake.move()
     map.render(container)
-
+    
     for (let i = 0; i < map.children.length; i++) {
         let obj = map.children[i];
             if (snake.children[0].x === obj.x && snake.children[0].y === obj.y) {
                 map.children.splice(i, 1);
-                snake.segmentsCount ++; // sau orice altă valoare dorită
+                snake.segmentsCount ++; 
                 console.log("segmentsCount:", snake.segmentsCount);
+                return snake.segmentsCount
             }
-    }
-}, 1000 )
+        }
+
+    }, 1000 )
 
 const userAction = (e) => {
     switch(e.code) {
